@@ -1,0 +1,13 @@
+{
+    "name": "mips/jeedom-tools",
+    "description": "Jeedom tools for plugin dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mips"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "MipsEqLogicTrait" : "src/" }
+    }
+}
