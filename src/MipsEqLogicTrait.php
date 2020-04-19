@@ -14,7 +14,7 @@ trait MipsEqLogicTrait {
 
 	public function createCommandsFromConfigFile(string $filePath, string $commandsKey) {
 		$commands = self::getCommandsFileContent($filePath);
-		$this->createCommands($commands[$commandsKey]);
+		$this->createCommandsFromConfig($commands[$commandsKey]);
 	}
 
 	public function createCommandsFromConfig(array $commands) {
