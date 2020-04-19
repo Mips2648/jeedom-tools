@@ -14,12 +14,12 @@ trait MipsEqLogicTrait {
 
 	public function createCommandsFromConfigFile(string $filePath, string $commandsKey) {
 		$commands = self::getCommandsFileContent($filePath);
-		$this->createCommands($commands, $commandsKey);
+		$this->createCommands($commands[$commandsKey]);
 	}
 
-	public function createCommands(array $commands, string $commandsKey) {
+	public function createCommands(array $commands) {
 		$link_cmds = array();
-		foreach ($commands[$commandsKey] as $cmdDef){
+		foreach ($commands as $cmdDef){
 			$cmd = $this->getCmd(null, $cmdDef["logicalId"]);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'debug', 'create:'.$cmdDef["logicalId"].'/'.$cmdDef["name"]);
