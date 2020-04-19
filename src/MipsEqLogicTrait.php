@@ -1,7 +1,7 @@
 <?php
 
 trait MipsEqLogicTrait {
-	private static function getFileContent($filePath) {
+	private static function getCommandsFileContent(string $filePath) {
 		if (!file_exists($filePath)) {
 			throw new RuntimeException("Fichier de configuration non trouvé:{$filePath}");
 		}
@@ -12,9 +12,12 @@ trait MipsEqLogicTrait {
 		return json_decode($content, true);
 	}
 
-	public function createCommandsFromConfig($filePath, $commandsKey) {
-		$commands = self::getFileContent($filePath);
+	public function createCommandsFromConfigFile(string $filePath, string $commandsKey) {
+		$commands = self::getCommandsFileContent($filePath);
+		$this->createCommands($commands, $commandsKey);
+	}
 
+	public function createCommands(array $commands, string $commandsKey) {
 		$link_cmds = array();
 		foreach ($commands[$commandsKey] as $cmdDef){
 			$cmd = $this->getCmd(null, $cmdDef["logicalId"]);
