@@ -1,22 +1,22 @@
 <?php
 
 trait MipsEqLogicTrait {
-	private static function getCommandsConfig($file) {
-		$return = array();
-		$path = dirname(__FILE__) . "/../config/{$file}";
-		$content = file_get_contents($path);
-		if (is_json($content)) {
-			$return += json_decode($content, true);
-		} else {
-			log::add(__CLASS__, 'error', __('Fichier de configuration non trouvé:', __FILE__).$path);
+	private static function getFileContent($filePath) {
+		if (!file_exists($filePath)) {
+			throw new RuntimeException("Fichier de configuration non trouvé:{$filePath}");
 		}
-
-		return $return;
+		$content = file_get_contents($filePath);
+		if (!is_json($content)) {
+			throw new RuntimeException("Fichier de configuration incorrecte:{$filePath}");
+		}
+		return json_decode($content, true);
 	}
 
-	public function createCmdFromDef($commandsDef) {
+	public function createCommandsFromConfig($filePath, $commandsKey) {
+		$commands = self::getFileContent($filePath);
+
 		$link_cmds = array();
-		foreach ($commandsDef as $cmdDef){
+		foreach ($commands[$commandsKey] as $cmdDef){
 			$cmd = $this->getCmd(null, $cmdDef["logicalId"]);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'debug', 'create:'.$cmdDef["logicalId"].'/'.$cmdDef["name"]);
