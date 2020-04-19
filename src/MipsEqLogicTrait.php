@@ -17,7 +17,7 @@ trait MipsEqLogicTrait {
 		$this->createCommands($commands[$commandsKey]);
 	}
 
-	public function createCommands(array $commands) {
+	public function createCommandsFromConfig(array $commands) {
 		$link_cmds = array();
 		foreach ($commands as $cmdDef){
 			$cmd = $this->getCmd(null, $cmdDef["logicalId"]);
