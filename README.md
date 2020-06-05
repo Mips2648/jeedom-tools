@@ -128,7 +128,7 @@ As you see you can have different set of commands in your file, `node`and `lamp`
 $eqLogic->createCommandsFromConfigFile(__DIR__ . '/../config/commands.json', 'lamp');
 ```
 
-Below you will find several concrete case
+Below you will find several concrete case. I create commands of my most complexe plugins using this method, it means that I've encountered a lot of use cases already and the current version should cover all your needs so if you don't achieve something, you probably know where to find me ;-)
 
 ### A state information and 2 actions on & off
 You can see in the example below how to assign generic type, default template, command type & subtype.
