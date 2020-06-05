@@ -3,7 +3,7 @@ Tools and helper class for Jeedom plugin development
 
 ## How to use it
 
-The most simple is to use composer: 
+The most simple and cleanest way is to use composer: 
 `composer require mips/jeedom-tools`
 
 And then to add the autoloader in your eqLogic file, example:
@@ -14,6 +14,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 class pluginTemplate extends eqLogic {
     use MipsEqLogicTrait;
 ```
+
+Using composer will make easier to upgrade the library if needed (`composer u`)
+
+Alternatively you can add the source as you wish to your plugin, add the `require` statement and make sure to use the trait.
 
 ## Creating eqLogic commands
 
