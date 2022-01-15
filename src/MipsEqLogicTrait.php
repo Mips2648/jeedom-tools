@@ -87,7 +87,7 @@ trait MipsEqLogicTrait {
 		}
 	}
 
-	private function executeAsync(string $_method, $_option = null) {
+	private static function executeAsync(string $_method, $_option = null, $_date = 'now') {
 		if (!method_exists(__CLASS__, $_method)) {
 			throw new InvalidArgumentException("Method provided for executeAsync does not exist: {$_method}");
 		}
@@ -99,7 +99,7 @@ trait MipsEqLogicTrait {
 			$cron->setOption($_option);
 		}
 		$cron->setOnce(1);
-		$cron->setSchedule(cron::convertDateToCron(strtotime("now") - 1));
+		$cron->setSchedule(cron::convertDateToCron(strtotime($_date)));
 		$cron->save();
 		$cron->run();
 		log::add(__CLASS__, 'debug', "ExecuteAsync '{$_method}'");
