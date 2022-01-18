@@ -101,7 +101,6 @@ trait MipsEqLogicTrait {
 		$cron->setOnce(1);
 		$cron->setSchedule(cron::convertDateToCron(strtotime($_date)));
 		$cron->save();
-		$cron->run();
-		log::add(__CLASS__, 'debug', "Task '{$_method}' started at {$_date}");
+		log::add(__CLASS__, 'debug', "Task '{$_method}' scheduled at {$_date}");
 	}
 }
