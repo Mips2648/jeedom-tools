@@ -99,8 +99,14 @@ trait MipsEqLogicTrait {
 			$cron->setOption($_option);
 		}
 		$cron->setOnce(1);
-		$cron->setSchedule(cron::convertDateToCron(strtotime($_date)));
+		$scheduleTime = strtotime($_date);
+		$cron->setSchedule(cron::convertDateToCron($scheduleTime));
 		$cron->save();
-		log::add(__CLASS__, 'debug', "Task '{$_method}' scheduled at {$_date}");
+		if ($scheduleTime <= strtotime('now')) {
+			$cron->run();
+			log::add(__CLASS__, 'debug', "Task '{$_method}' executed now");
+		} else {
+			log::add(__CLASS__, 'debug', "Task '{$_method}' scheduled at {$_date}");
+		}
 	}
 }
