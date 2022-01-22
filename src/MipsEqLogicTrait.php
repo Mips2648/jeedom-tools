@@ -20,6 +20,7 @@ trait MipsEqLogicTrait {
 	public function createCommandsFromConfig(array $commands) {
 		$link_cmds = array();
 		foreach ($commands as $cmdDef) {
+			/** @var cmd */
 			$cmd = $this->getCmd(null, $cmdDef["logicalId"]);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'debug', 'create:' . $cmdDef["logicalId"] . '/' . $cmdDef["name"]);
@@ -77,7 +78,9 @@ trait MipsEqLogicTrait {
 		}
 
 		foreach ($link_cmds as $cmd_logicalId => $link_logicalId) {
+			/** @var cmd */
 			$cmd = $this->getCmd(null, $cmd_logicalId);
+			/** @var cmd */
 			$linkCmd = $this->getCmd(null, $link_logicalId);
 
 			if (is_object($cmd) && is_object($linkCmd)) {
