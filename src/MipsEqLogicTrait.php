@@ -112,4 +112,10 @@ trait MipsEqLogicTrait {
 			log::add(__CLASS__, 'debug', "Task '{$_method}' scheduled at {$_date}");
 		}
 	}
+
+	private function getCmdInfoValue($logicalId, $default = '') {
+		$cmd = $this->getCmd(null, $logicalId);
+		if (!is_object($cmd)) return $default;
+		return $cmd->execCmd();
+	}
 }
