@@ -118,4 +118,25 @@ trait MipsEqLogicTrait {
 		if (!is_object($cmd)) return $default;
 		return $cmd->execCmd();
 	}
+
+	public static function sendToDaemon($params, $port = 0) {
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['state'] != 'ok') {
+			throw new RuntimeException("Le démon n'est pas démarré");
+		}
+		if ($port == 0) {
+			$port = config::byKey('socketport', __CLASS__, 0);
+			if ($port == 0) {
+				throw new InvalidArgumentException("Please specify a correct port number");
+			}
+		}
+
+		log::add(__CLASS__, 'debug', 'params to send to daemon:' . json_encode($params));
+		$params['apikey'] = jeedom::getApiKey(__CLASS__);
+		$payLoad = json_encode($params);
+		$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		socket_connect($socket, '127.0.0.1', $port);
+		socket_write($socket, $payLoad, strlen($payLoad));
+		socket_close($socket);
+	}
 }
