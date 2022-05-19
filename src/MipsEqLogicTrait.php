@@ -119,7 +119,7 @@ trait MipsEqLogicTrait {
 		return $cmd->execCmd();
 	}
 
-	public static $_socketport = 0;
+	private static $_socketport = 0;
 
 	public static function sendToDaemon($params) {
 		$deamon_info = self::deamon_info();
