@@ -119,15 +119,18 @@ trait MipsEqLogicTrait {
 		return $cmd->execCmd();
 	}
 
-	public static function sendToDaemon($params, $port = 0) {
+	public static $_socketport = 0;
+
+	public static function sendToDaemon($params) {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] != 'ok') {
 			throw new RuntimeException("Le démon n'est pas démarré");
 		}
+		$port = self::$_socketport;
 		if ($port == 0) {
 			$port = config::byKey('socketport', __CLASS__, 0);
 			if ($port == 0) {
-				throw new InvalidArgumentException("Please specify a correct port number");
+				throw new InvalidArgumentException("Please configure a correct port number");
 			}
 		}
 
