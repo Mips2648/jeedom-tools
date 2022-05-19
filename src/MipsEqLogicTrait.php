@@ -113,7 +113,7 @@ trait MipsEqLogicTrait {
 		}
 	}
 
-	private function getCmdInfoValue($logicalId, $default = '') {
+	public function getCmdInfoValue($logicalId, $default = '') {
 		$cmd = $this->getCmd(null, $logicalId);
 		if (!is_object($cmd)) return $default;
 		return $cmd->execCmd();
