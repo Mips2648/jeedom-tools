@@ -119,7 +119,9 @@ trait MipsEqLogicTrait {
 		return $cmd->execCmd();
 	}
 
-	abstract protected static function getSocketPort();
+	protected static function getSocketPort() {
+		return 0;
+	}
 
 	public static function sendToDaemon($params) {
 		$deamon_info = self::deamon_info();
@@ -128,7 +130,7 @@ trait MipsEqLogicTrait {
 		}
 		$port = self::getSocketPort();
 		if ($port < 1 || $port > 65535) {
-			throw new InvalidArgumentException("Please provide a valid port number");
+			throw new InvalidArgumentException("Please implement static function getSocketPort and return a valid port number");
 		}
 
 		log::add(__CLASS__, 'debug', 'params to send to daemon:' . json_encode($params));
