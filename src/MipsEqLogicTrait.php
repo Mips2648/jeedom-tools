@@ -121,7 +121,7 @@ trait MipsEqLogicTrait {
 
 	abstract protected static function getSocketPort();
 
-	private static function sendToDaemon($params) {
+	public static function sendToDaemon($params) {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] != 'ok') {
 			throw new RuntimeException("Le démon n'est pas démarré");
