@@ -181,4 +181,20 @@ trait MipsEqLogicTrait {
 		}
 		return true;
 	}
+
+	protected static function logDebug(string $message, string $logicalId = '') {
+		log::add(__CLASS__, 'debug', $message, $logicalId);
+	}
+
+	protected static function Loginfo(string $message, string $logicalId = '') {
+		log::add(__CLASS__, 'info', $message, $logicalId);
+	}
+
+	protected static function logWarning(string $message, string $logicalId = '') {
+		log::add(__CLASS__, 'warning', $message, $logicalId);
+	}
+
+	protected static function logError(string $message, string $logicalId = '') {
+		log::add(__CLASS__, 'error', $message, $logicalId);
+	}
 }
