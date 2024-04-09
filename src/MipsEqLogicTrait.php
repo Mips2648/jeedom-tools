@@ -186,7 +186,7 @@ trait MipsEqLogicTrait {
 		log::add(__CLASS__, 'debug', $message, $logicalId);
 	}
 
-	protected static function loginfo(string $message, string $logicalId = '') {
+	protected static function logInfo(string $message, string $logicalId = '') {
 		log::add(__CLASS__, 'info', $message, $logicalId);
 	}
 
