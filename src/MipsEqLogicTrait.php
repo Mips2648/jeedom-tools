@@ -163,6 +163,9 @@ trait MipsEqLogicTrait {
 	}
 
 	private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath) {
+		if (!file_exists($pythonPath) || !file_exists($requirementsPath)) {
+			return false;
+		}
 		exec("{$pythonPath} -m pip freeze", $packages_installed);
 		$packages = join("||", $packages_installed);
 		exec("cat {$requirementsPath}", $packages_needed);
