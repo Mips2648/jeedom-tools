@@ -161,4 +161,24 @@ trait MipsEqLogicTrait {
 
 		return $return;
 	}
+
+	private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath) {
+		exec("{$pythonPath} -m pip freeze", $packages_installed);
+		$packages = join("||", $packages_installed);
+		exec("cat {$requirementsPath}", $packages_needed);
+		foreach ($packages_needed as $line) {
+			if (preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $line, $need) === 1) {
+				if (preg_match('/' . $need[1] . '==([\d+\.?]+)/', $packages, $install) === 1) {
+					if ($need[2] == '==' && $need[3] != $install[1]) {
+						return false;
+					} elseif (version_compare($need[3], $install[1], '>')) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
