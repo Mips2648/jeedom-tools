@@ -9,6 +9,7 @@ trait MipsEqLogicTrait {
 		if (!is_json($content)) {
 			throw new RuntimeException("Fichier de configuration incorrecte:{$filePath}");
 		}
+		$content = translate::exec($content, realpath($filePath));
 		return json_decode($content, true);
 	}
 
