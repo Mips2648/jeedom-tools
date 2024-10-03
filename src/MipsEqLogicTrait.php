@@ -175,7 +175,7 @@ trait MipsEqLogicTrait {
 		exec("cat {$requirementsPath}", $packages_needed);
 		foreach ($packages_needed as $line) {
 			if (preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $line, $need) === 1) {
-				if (preg_match('/' . $need[1] . '==([\d+\.?]+)/', $packages, $install) === 1) {
+				if (preg_match('/' . $need[1] . '==([\d+\.?]+)/i', $packages, $install) === 1) {
 					if ($need[2] == '==' && $need[3] != $install[1]) {
 						return false;
 					} elseif (version_compare($need[3], $install[1], '>')) {
