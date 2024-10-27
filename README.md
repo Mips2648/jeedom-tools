@@ -2,6 +2,8 @@
 
 Tools and helper class for Jeedom plugin development
 
+[![Tests PHP 7.4](https://github.com/Mips2648/jeedom-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/Mips2648/jeedom-tools/actions/workflows/ci.yml)
+
 ## How to use it
 
 The most simple and cleanest way is to use composer:
