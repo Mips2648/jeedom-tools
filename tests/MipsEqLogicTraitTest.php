@@ -111,6 +111,20 @@ class MipsEqLogicTraitTest extends TestCase {
         $this->assertEquals('1.1.0', $details[1]);
     }
 
+    // tests on getInstalledPackageDetail
+    public function testgetInstalledPackageDetail_present_mix_case() {
+        $trait = new class {
+            use MipsEqLogicTrait {
+                getInstalledPackageDetail as public; // make the method public
+            }
+        };
+
+        $result = $trait->getInstalledPackageDetail('unidecode', 'Unidecode==1.1.0||anotherpackage==1.1.1', $details);
+        $this->assertTrue($result);
+        $this->assertEquals('Unidecode==1.1.0', $details[0]);
+        $this->assertEquals('1.1.0', $details[1]);
+    }
+
     public function testgetInstalledPackageDetail_absent() {
         $trait = new class {
             use MipsEqLogicTrait {
