@@ -28,7 +28,7 @@ class MipsEqLogicTraitTest extends TestCase {
             }
         };
 
-        $result = $trait->getRequiredPackageDetail('jeedomdaemon~=1.0.0', $details);
+        $result = $trait->getRequiredPackageDetail('jeedomdaemon ~=1.0.0', $details);
         $this->assertTrue($result);
         $this->assertEquals('jeedomdaemon', $details[1]);
         $this->assertEquals('~=', $details[2]);
@@ -42,11 +42,25 @@ class MipsEqLogicTraitTest extends TestCase {
             }
         };
 
-        $result = $trait->getRequiredPackageDetail('jeedomdaemon>=1.0.0', $details);
+        $result = $trait->getRequiredPackageDetail('jeedomdaemon>= 1.0.0', $details);
         $this->assertTrue($result);
         $this->assertEquals('jeedomdaemon', $details[1]);
         $this->assertEquals('>=', $details[2]);
         $this->assertEquals('1.0.0', $details[3]);
+    }
+
+    public function testgetRequiredPackageDetail_extra() {
+        $trait = new class {
+            use MipsEqLogicTrait {
+                getRequiredPackageDetail as public; // make the method public
+            }
+        };
+
+        $result = $trait->getRequiredPackageDetail('pymodbus[serial] == 3.7.3', $details);
+        $this->assertTrue($result);
+        $this->assertEquals('pymodbus[serial]', $details[1]);
+        $this->assertEquals('==', $details[2]);
+        $this->assertEquals('3.7.3', $details[3]);
     }
 
     public function testgetRequiredPackageDetail_equal() {
