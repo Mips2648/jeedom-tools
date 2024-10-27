@@ -166,19 +166,50 @@ trait MipsEqLogicTrait {
 		return $return;
 	}
 
+	/**
+	 * Return the package detail from the requirement line if it is a valid requirement line
+	 *
+	 * @param string $requirementLine
+	 * @param string[] $packageDetail if the requirement line is valid, it will contain the following:
+	 * - [0] the full requirement line
+	 * - [1] the package name
+	 * - [2] the operator
+	 * - [3] the version
+	 * @return bool true if the requirement line is valid, false otherwise
+	 */
+	private static function getRequiredPackageDetail(string $requirementLine, &$packageDetail) {
+		return preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $requirementLine, $packageDetail) === 1;
+	}
+
+	/**
+	 * Return the installed package detail from the installed packages list if it exists
+	 *
+	 * @param string $packageName
+	 * @param string $installedPackages the list of installed packages in the format 'package==version||package==version'
+	 * @param string[] $packageDetail if the package is installed, it will contain the following:
+	 * - [0] 'package==version'
+	 * - [1] the version
+	 * @return bool true if the package is installed, false otherwise
+	 */
+	private static function getInstalledPackageDetail(string $packageName, string $installedPackages, &$packageDetail) {
+		return preg_match('/' . $packageName . '==([\d+\.?]+)/i', $installedPackages, $packageDetail) === 1;
+	}
+
 	private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath) {
 		if (!file_exists($pythonPath) || !file_exists($requirementsPath)) {
 			return false;
 		}
 		exec("{$pythonPath} -m pip freeze", $packages_installed);
 		$packages = join("||", $packages_installed);
-		exec("cat {$requirementsPath}", $packages_needed);
-		foreach ($packages_needed as $line) {
-			if (preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $line, $need) === 1) {
-				if (preg_match('/' . $need[1] . '==([\d+\.?]+)/i', $packages, $install) === 1) {
-					if ($need[2] == '==' && $need[3] != $install[1]) {
+		exec("cat {$requirementsPath}", $requirements);
+
+		foreach ($requirements as $requirement_line) {
+			if (self::getRequiredPackageDetail($requirement_line, $package_details)) {
+				list($required_package_name, $required_package_operator, $required_package_version) = $package_details;
+				if (self::getInstalledPackageDetail($required_package_name, $packages, $install)) {
+					if ($required_package_operator == '==' && $required_package_version != $install[1]) {
 						return false;
-					} elseif (version_compare($need[3], $install[1], '>')) {
+					} elseif (version_compare($required_package_version, $install[1], '>')) {
 						return false;
 					}
 				} else {
