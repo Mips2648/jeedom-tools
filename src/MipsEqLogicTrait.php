@@ -178,7 +178,16 @@ trait MipsEqLogicTrait {
 	 * @return bool true if the requirement line is valid, false otherwise
 	 */
 	private static function getRequiredPackageDetail(string $requirementLine, &$packageDetail) {
-		return preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $requirementLine, $packageDetail) === 1;
+		// regex explanation to match https://pip.pypa.io/en/stable/reference/requirement-specifiers/:
+		// valid name: https://packaging.python.org/en/latest/specifications/name-normalization/
+		// optional spaces
+		// optional brackets with a set of “extras” that serve to install optional dependencies
+		// optionally constraints to apply on the version of the package which will consist of
+		// - an operator: one of ==, >=, ~=
+		// - a version: a series of digits and dots
+		// optional spaces
+		// end of line or a semicolon or a comma with environment markers
+		return preg_match('/^(?<name>[A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])\s*(?:\[.*\])?\s*(?:(?<operator>[>=~]=)\s*(?<version>[\d+\.?]+))?\s*(?:$|;.*|,.*)/i', $requirementLine, $packageDetail) === 1;
 	}
 
 	/**
