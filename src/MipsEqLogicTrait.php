@@ -194,14 +194,15 @@ trait MipsEqLogicTrait {
 	 * Return the installed package detail from the installed packages list if it exists
 	 *
 	 * @param string $packageName
-	 * @param string $installedPackages the list of installed packages in the format 'package==version||package==version'
+	 * @param array $installedPackages the list of installed packages
 	 * @param string[] $packageDetail if the package is installed, it will contain the following:
 	 * - [0] 'package==version'
 	 * - [1] the version
 	 * @return bool true if the package is installed, false otherwise
 	 */
-	private static function getInstalledPackageDetail(string $packageName, string $installedPackages, &$packageDetail) {
-		return preg_match('/' . $packageName . '==([\d+\.?]+)/i', $installedPackages, $packageDetail) === 1;
+	private static function getInstalledPackageDetail(string $packageName, array $installedPackages, &$packageDetail) {
+		$packages = "||" . join("||", $installedPackages);
+		return preg_match('/\|\|\K' . $packageName . '==([\d+\.?]+)/i', $packages, $packageDetail) === 1;
 	}
 
 	private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath) {
@@ -209,19 +210,20 @@ trait MipsEqLogicTrait {
 			return false;
 		}
 		exec("{$pythonPath} -m pip freeze", $packages_installed);
-		$packages = join("||", $packages_installed);
 		exec("cat {$requirementsPath}", $requirements);
 
 		foreach ($requirements as $requirement_line) {
 			if (self::getRequiredPackageDetail($requirement_line, $package_details)) {
-				list($required_package_name, $required_package_operator, $required_package_version) = $package_details;
-				if (self::getInstalledPackageDetail($required_package_name, $packages, $install)) {
-					if ($required_package_operator == '==' && $required_package_version != $install[1]) {
+				if (self::getInstalledPackageDetail($package_details['name'], $packages_installed, $install)) {
+					if ($package_details['operator'] == '==' && $package_details['version'] != $install[1]) {
+						log::add(__CLASS__, 'debug', "Package {$package_details['name']} version is {$install[1]} but version {$package_details['version']} is required");
 						return false;
-					} elseif (version_compare($required_package_version, $install[1], '>')) {
+					} elseif (version_compare($package_details['version'], $install[1], '>')) {
+						log::add(__CLASS__, 'debug', "Package {$package_details['name']} version is {$install[1]} but version at least {$package_details['version']} is required");
 						return false;
 					}
 				} else {
+					log::add(__CLASS__, 'debug', "Package {$package_details['name']} seems not installed");
 					return false;
 				}
 			}
