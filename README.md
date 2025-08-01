@@ -49,7 +49,7 @@ The static function `executeAsync` will simply create a new oneTime cron and run
 There is a third argument `$_date`, which is by default equal to `now`, to which you can pass any English textual datetime description that `strtotime()` can interpret.
 
 > Warning
-> The method self::executeAsync from this trait is deprecated, please use utils::executeAsync(__CLASS__, ...) from Jeedom core instead; all arguments are exactly the same except that you must provide your class name as first argument. Method from the core is behaving exactly the same way (it's a copy/paste)
+> The method `self::executeAsync` from this trait is deprecated, please use `utils::executeAsync(__CLASS__, ...)` from Jeedom core instead; all arguments are exactly the same except that you must provide your class name as first argument. Method from the core is behaving exactly the same way (it's a copy/paste)
 
 ## Creating eqLogic commands
 
