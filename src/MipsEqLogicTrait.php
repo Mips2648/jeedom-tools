@@ -94,27 +94,13 @@ trait MipsEqLogicTrait {
 		}
 	}
 
+	/**
+	 * @deprecated Use utils::executeAsync(__CLASS__, ...) instead
+	 */
 	private static function executeAsync(string $_method, $_option = null, $_date = 'now') {
-		if (!method_exists(__CLASS__, $_method)) {
-			throw new InvalidArgumentException("Method provided for executeAsync does not exist: {$_method}");
-		}
+		log::add(__CLASS__, 'warning', "Method executeAsync from MipsEqLogicTrait is deprecated, please use utils::executeAsync(__CLASS__, ...) instead");
 
-		$cron = new cron();
-		$cron->setClass(__CLASS__);
-		$cron->setFunction($_method);
-		if (isset($_option)) {
-			$cron->setOption($_option);
-		}
-		$cron->setOnce(1);
-		$scheduleTime = strtotime($_date);
-		$cron->setSchedule(cron::convertDateToCron($scheduleTime));
-		$cron->save();
-		if ($scheduleTime <= strtotime('now')) {
-			$cron->run();
-			log::add(__CLASS__, 'debug', "Task '{$_method}' executed now");
-		} else {
-			log::add(__CLASS__, 'debug', "Task '{$_method}' scheduled at {$_date}");
-		}
+		utils::executeAsync(__CLASS__, $_method, $_option, $_date);
 	}
 
 	public function getCmdInfoValue($logicalId, $default = '') {
