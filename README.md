@@ -3,6 +3,7 @@
 Tools and helper class for Jeedom plugin development
 
 [![Tests PHP 7.4](https://github.com/Mips2648/jeedom-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/Mips2648/jeedom-tools/actions/workflows/ci.yml)
+[![Sponsor Mips2648](https://img.shields.io/badge/Sponsor-Mips2648-ea4aaa?logo=githubsponsors)](https://github.com/sponsors/Mips2648)
 
 ## How to use it
 
